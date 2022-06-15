@@ -1,0 +1,14 @@
+<%= turbo_stream_from @room %>
+
+<div id="messages">
+  <%- @room.messages.each do |message| %>
+    <%= render "messages/message", message: message %>
+  <% end %>
+</div>
+
+<%= turbo_frame_tag "new_message", src: new_room_message_path(@room) do %>
+  <%= form_with(model: [@room, @message], data: { controller: "reset-form", action: "turbo:submit-end->reset-form#clear" }) do |f| %>
+    <%= f.text_field :text %>
+    <%= f.submit %>
+  <% end %>
+<% end %>
